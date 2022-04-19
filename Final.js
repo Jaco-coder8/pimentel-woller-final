@@ -267,17 +267,19 @@ var startButton = new Button({
     }
 });  // start button that changes scene to playable game
 
-var orientation = round(random(1,2)); // 1 for horizonal 2 for verticle
-var Battleship = function(x,y,size,direction){
+var Battleship = function(x,y){
     this.x = x;
     this.y = y;
-    this.size = ""; //have to change this
-    this.direction = "";  // have to change this 
+};
+
+Battleship.prototype.position = function(){
+    var orientation = round(random(1,2)); // 1 for horizonal 2 for verticle
+    var battle_len = round(random(min_l, max_l)); //len of ship itself
 };
 
 var battleships = [];
 for(var i = 0;i<numShips;i++){
-    
+    battleships.push(new Battleship(round(random(0,9)),round(random(0,9))));
 }
 
 //constructor for class Tile
