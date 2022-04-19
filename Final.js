@@ -7,6 +7,7 @@ var max_l = 5;
 var min_l = 2;
 var numShips = 4;
 var currentScene = 0;
+var m = millis();
 
 /* Layout of numbers on the board for array 
 0   3   6
@@ -276,7 +277,7 @@ var Battleship = function(x,y,size,direction){
 
 var battleships = [];
 for(var i = 0;i<numShips;i++){
-    battleships.push(new Battleship(100,100,random(min_l,max_l),100));
+    
 }
 
 //constructor for class Tile
@@ -350,7 +351,7 @@ mouseReleased = function() {
         startButton.handleMouseClick();
     }
     
-    if(currentScene===1){
+    if(currentScene===2){
     for (var i in tiles) {
         tiles[i].handleMouseClick(mouseX, mouseY);
     }
@@ -361,8 +362,17 @@ draw = function() {
     if(currentScene === 0){splashScreen();}
     
     if(currentScene === 1){
+        textSize(20);
+        background(0, 0, 0);
+        fill(255, 255, 255);
+        text("Loading...",150,200);
+        if(round((millis()-m)/1000)>=5){
+            currentScene=2;
+        }
+    }
+    
+    if(currentScene === 2){
         background(143, 143, 143);
         drawTiles();
     }
 };
-
