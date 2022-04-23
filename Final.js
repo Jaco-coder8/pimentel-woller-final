@@ -9,6 +9,7 @@ var min_l = 2;
 var m = millis();
 var NUM_COLS = 10;
 var NUM_ROWS = 10;
+var checkWin = false;
 
 var drawShirt=function(xPosition,yPosition,size){//shirt
     noStroke();
@@ -320,8 +321,7 @@ var createImages = function(){
 };
 createImages();
 
-/*
-///////Change this to set up ships 
+/*Change this to set up ships 
 // Now shuffle the elements of that array
 var shuffleArray = function(array) {
     var counter = array.length;
@@ -353,7 +353,6 @@ for (var i = 0; i < NUM_COLS; i++) {
 }
 
 
-
 mouseClicked = function() {
     if(currentScene === 0){startButton.handleMouseClick();}
     
@@ -366,7 +365,8 @@ mouseClicked = function() {
                 flippedTiles.push(tile);
                 if (flippedTiles.length === 1) {
                     numTries++;
-                    if (flippedTiles[0].face === flippedTiles[0].face) {  //create win and lose condition
+                    if (flippedTiles[0].face === faces[0]) {  //create win and lose condition
+                        println("HIT!");
                         flippedTiles[0].isMatch = true;
                         flippedTiles.length = 0;
                     }
@@ -382,26 +382,46 @@ draw = function() {
     if(currentScene === 0){splash();}
     
     if(currentScene === 1){
-    background(255, 255, 255);
-    
-    fill(0, 0, 0);
-    text("Tries: " + numTries,175,20);
-    
-    if (delayStartFC && (frameCount - delayStartFC) > 30) {
-        for (var i = 0; i < tiles.length; i++) {
-            var tile = tiles[i];
-            if (!tile.isMatch) {
-                tile.isFaceUp = false;
+        background(255, 255, 255);
+        
+        fill(0, 0, 0);
+        text("Tries: " + numTries,175,20);
+        if (delayStartFC && (frameCount - delayStartFC) > 30) {
+            for (var i = 0; i < tiles.length; i++) {
+                var tile = tiles[i];
+                if (!tile.isMatch) {
+                    tile.isFaceUp = false;
+                }
             }
+            flippedTiles = [];
+            delayStartFC = null;
+        
         }
-        flippedTiles = [];
-        delayStartFC = null;
-       // noLoop();
-    }
+        for (var i = 0; i < tiles.length; i++) {
+            tiles[i].draw();
+        }
+        
+        if(numTries === 40){
+            currentScene = 3;
+        }
+        
+        if(checkWin === true){
+            currentScene = 2;
+        }
     
-    for (var i = 0; i < tiles.length; i++) {
-        tiles[i].draw();
+    }
+    ///end screen here
+    //current scene 2 is winner screen
+    if(currentScene === 2){
+        
+        
+        
+    }
+    //current scene 3 is loser screen
+    if(currentScene === 3){
+        
+        
+        
     }
 
-    }
 };
