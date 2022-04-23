@@ -1,19 +1,14 @@
-var playerTurn = 0;
-var NUM_COLS = 10;
-var NUM_ROWS = 10;
-var tiles = [];
-var SYMBOLS = ["X","O"];
+var numTries = 0;
+var numMatches = 0;
+var flippedTiles = [];
+var delayStartFC = null;
+var currentScene = 0;  // used in draw function to determine what to show on screen
+var numShips = 4;
 var max_l = 5;
 var min_l = 2;
-var numShips = 4;
-var currentScene = 0;
 var m = millis();
-
-/* Layout of numbers on the board for array 
-0   3   6
-1   4   7
-2   5   8
-*/
+var NUM_COLS = 10;
+var NUM_ROWS = 10;
 
 var drawShirt=function(xPosition,yPosition,size){//shirt
     noStroke();
@@ -226,8 +221,7 @@ var drawBitmojiP = function(BitmojiX,BitmojiY,BitmojiHeight)   {
     
 };
 
-//Code borrowed from Khan Academys Tutorials
-var Button = function(config) {
+var Button = function(config) {  //button constructor function
     this.x = config.x || 0;
     this.y = config.y || 0;
     this.width = config.width || 150;
@@ -242,7 +236,7 @@ Button.prototype.draw = function() {
     fill(0, 0, 0);
     textSize(19);
     textAlign(LEFT, TOP);
-    text(this.label, this.x+10, this.y+this.height/4);
+    text(this.label, this.x, this.y+this.height/4);
 }; //prototype draw for button
 
 Button.prototype.isMouseInside = function() {
@@ -259,86 +253,16 @@ Button.prototype.handleMouseClick = function() {
 }; //prototype handlemouseinside for button
 
 var startButton = new Button({
-    x: 121,
-    y: 315,
-    label: "        Start",
+    x: 123,
+    y: 265,
+    label: "          Start",
     onClick: function() {
-        currentScene = 1;
+          currentScene = 1;//changes the scene to the game
     }
 });  // start button that changes scene to playable game
 
-var Battleship = function(x,y){
-    this.x = x;
-    this.y = y;
-};
-
-Battleship.prototype.position = function(){
-    var orientation = round(random(1,2)); // 1 for horizonal 2 for verticle
-    var battle_len = round(random(min_l, max_l)); //len of ship itself
-};
-
-var battleships = [];
-for(var i = 0;i<numShips;i++){
-    battleships.push(new Battleship(round(random(0,9)),round(random(0,9))));
-}
-
-//constructor for class Tile
-var Tile = function(x, y) {      
-    this.x = x;
-    this.y = y;
-    this.size = width/NUM_COLS;
-    this.label = "";
-};
-
-//method for tile to draw itself
-Tile.prototype.draw = function() {
-    fill(214, 247, 202);
-    strokeWeight(2);
-    rect(this.x, this.y, this.size, this.size, 10);
-    textSize(25);
-    textAlign(CENTER, CENTER);
-    fill(0, 0, 0);
-    text(this.label, this.x+this.size/2, this.y+this.size/2);
-};
-
-//method to check if box is empty
-Tile.prototype.empty = function() {
-    return this.label === "";
-};
-
-//method to do something on click
-Tile.prototype.onClick = function() {
-    // If the tile is not empty, exit the function
-    if(!this.empty()){
-        return;
-    }
-    // Put the player's symbol on the tile
-    this.label = SYMBOLS[playerTurn];
-    // Change the turn
-    playerTurn++;
-    if(playerTurn >= SYMBOLS.length){
-        playerTurn = 0;
-    }
-};
-
-Tile.prototype.handleMouseClick = function(x, y) {
-    // Check for mouse clicks inside the tile
-    if(x >= this.x && x <= this.x + this.size && y >= this.y && y <= this.y + this.size){this.onClick();}
-};
-
-for (var i = 0; i < NUM_COLS; i++) {
-    for (var j = 0; j < NUM_ROWS; j++) {
-        tiles.push(new Tile(i * (width/NUM_COLS-1), j * (height/NUM_ROWS-1)));
-    }
-}
-
-var drawTiles = function() {
-    for (var i in tiles) {
-        tiles[i].draw();
-    }
-};
-
-var splashScreen = function(){
+var splash = function( ){    //starting screen with a button that takes you to the next screen
+    
     background(250, 42, 229);
     textAlign(CENTER,CENTER);
     textSize(24);
@@ -346,35 +270,138 @@ var splashScreen = function(){
     drawBitmojiW(45,50,63);
     drawBitmojiP(341,54,100);
     startButton.draw();
-};
-
-mouseReleased = function() {
-    if(currentScene===0){
-        startButton.handleMouseClick();
-    }
     
-    if(currentScene===2){
-    for (var i in tiles) {
-        tiles[i].handleMouseClick(mouseX, mouseY);
-    }
+};
+
+//Borrowed from Khan Academy
+var Tile = function(x, y, face) {
+    this.x = x;
+    this.y = y;
+    this.size = 30;
+    this.face = face;
+    this.isFaceUp = false;
+    this.isMatch = false;
+};
+
+Tile.prototype.draw = function() {
+    fill(204, 45, 204);
+    stroke(0, 0, 0);
+    strokeWeight(2);
+    rect(this.x, this.y, this.size, this.size, 10);
+    if (this.isFaceUp) {
+        fill(255, 255, 255);
+        image(this.face, this.x, this.y, this.size, this.size);
+        fill(0, 0, 0);
     }
 };
 
-draw = function() {
-    if(currentScene === 0){splashScreen();}
+Tile.prototype.isUnderMouse = function(x, y) {
+    return x >= this.x && x <= this.x + this.size  &&
+        y >= this.y && y <= this.y + this.size;
+};
+
+// Declare an array of all possible faces
+var faces = [  
+    getImage("space/rocketship"),
+    getImage("creatures/OhNoes")
+];
+
+var selected = [];
+var createImages = function(){
+    var totalSpots = 0;
+    for(var i = 0; i < 14; i++){
+       selected.push(faces[0]);
+       totalSpots++;
+    }
+    for(var i = 0; i < ((NUM_COLS * NUM_ROWS)-totalSpots); i++){
+      selected.push(faces[1]);
+    }
+
+};
+createImages();
+
+/*
+///////Change this to set up ships 
+// Now shuffle the elements of that array
+var shuffleArray = function(array) {
+    var counter = array.length;
+
+    // While there are elements in the array
+    while (counter > 0) {
+        // Pick a random index
+        var ind = Math.floor(Math.random() * counter);
+        // Decrease counter by 1
+        counter--;
+        // And swap the last element with it
+        var temp = array[counter];
+        array[counter] = array[ind];
+        array[ind] = temp;
+    }
+};
+shuffleArray(selected);
+*/
+
+// Create the tiles
+var tiles = [];
+for (var i = 0; i < NUM_COLS; i++) {
+    for (var j = 0; j < NUM_ROWS; j++) {
+        var tileX = i * 40 + 5;
+        var tileY = j * 35 + 50;
+        var tileFace = selected.pop();
+        tiles.push(new Tile(tileX, tileY, tileFace));
+    }
+}
+
+
+
+mouseClicked = function() {
+    if(currentScene === 0){startButton.handleMouseClick();}
     
     if(currentScene === 1){
-        textSize(20);
-        background(0, 0, 0);
-        fill(255, 255, 255);
-        text("Loading...",150,200);
-        if(round((millis()-m)/1000)>=5){
-            currentScene=2;
+    for (var i = 0; i < tiles.length; i++) {
+        var tile = tiles[i];
+        if (tile.isUnderMouse(mouseX, mouseY)) {
+            if (flippedTiles.length < 2 && !tile.isFaceUp) {
+                tile.isFaceUp = true;
+                flippedTiles.push(tile);
+                if (flippedTiles.length === 1) {
+                    numTries++;
+                    if (flippedTiles[0].face === flippedTiles[0].face) {  //create win and lose condition
+                        flippedTiles[0].isMatch = true;
+                        flippedTiles.length = 0;
+                    }
+                    delayStartFC = frameCount;
+                }
+            } 
+            loop();
         }
     }
+    }};
+
+draw = function() {
+    if(currentScene === 0){splash();}
     
-    if(currentScene === 2){
-        background(143, 143, 143);
-        drawTiles();
+    if(currentScene === 1){
+    background(255, 255, 255);
+    
+    fill(0, 0, 0);
+    text("Tries: " + numTries,175,20);
+    
+    if (delayStartFC && (frameCount - delayStartFC) > 30) {
+        for (var i = 0; i < tiles.length; i++) {
+            var tile = tiles[i];
+            if (!tile.isMatch) {
+                tile.isFaceUp = false;
+            }
+        }
+        flippedTiles = [];
+        delayStartFC = null;
+       // noLoop();
+    }
+    
+    for (var i = 0; i < tiles.length; i++) {
+        tiles[i].draw();
+    }
+
     }
 };
