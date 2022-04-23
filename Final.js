@@ -2,7 +2,7 @@ var numTries = 0;
 var numMatches = 0;
 var flippedTiles = [];
 var delayStartFC = null;
-var currentScene = 0;  // used in draw function to determine what to show on screen
+var currentScene = 3;  // used in draw function to determine what to show on screen
 var numShips = 4;
 var max_l = 5;
 var min_l = 2;
@@ -413,15 +413,29 @@ draw = function() {
     ///end screen here
     //current scene 2 is winner screen
     if(currentScene === 2){
-        
-        
-        
+        textAlign(CENTER,CENTER);
+        background(23, 242, 8);
+        drawBitmojiW(75,100,50);
+        drawBitmojiP(315,100,75);
+        rect(100,200,200,45); 
+        fill(0, 0, 0);
+        textSize(20);
+        text("Congrats! You Won!",200,223);
+        image(getImage("creatures/Winston"),25,275,100,100);
+        image(getImage("cute/Star"),275,275,100,100);
     }
     //current scene 3 is loser screen
     if(currentScene === 3){
-        
-        
-        
+        textAlign(CENTER,CENTER);
+        background(224, 16, 16);
+        drawBitmojiW(75,100,50);
+        drawBitmojiP(315,100,75);
+        rect(90,187,225,75); 
+        fill(0, 0, 0);
+        textSize(20);
+        text("Sorry! You Lost!\n Better luck next time!",200,223);
+        image(getImage("creatures/BabyWinston"),25,275,100,100);
+        image(getImage("creatures/OhNoes"),275,275,100,100);
     }
 
 };
