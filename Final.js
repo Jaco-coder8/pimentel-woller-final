@@ -1,8 +1,9 @@
+
 var numTries = 0;
 var numMatches = 0;
 var flippedTiles = [];
 var delayStartFC = null;
-var currentScene = 3;  // used in draw function to determine what to show on screen
+var currentScene = 0;  // used in draw function to determine what to show on screen
 var numShips = 4;
 var max_l = 5;
 var min_l = 2;
@@ -10,6 +11,9 @@ var m = millis();
 var NUM_COLS = 10;
 var NUM_ROWS = 10;
 var checkWin = false;
+var TextX = 100;
+var TextY = 100;
+var TextSpeed = 2;
 
 var drawShirt=function(xPosition,yPosition,size){//shirt
     noStroke();
@@ -325,7 +329,6 @@ createImages();
 // Now shuffle the elements of that array
 var shuffleArray = function(array) {
     var counter = array.length;
-
     // While there are elements in the array
     while (counter > 0) {
         // Pick a random index
@@ -417,25 +420,31 @@ draw = function() {
         background(23, 242, 8);
         drawBitmojiW(75,100,50);
         drawBitmojiP(315,100,75);
-        rect(100,200,200,45); 
+        rect(TextX+-354,TextY+98,200,45); 
         fill(0, 0, 0);
         textSize(20);
-        text("Congrats! You Won!",200,223);
+        text("Congrats! You Won!",TextX+-255,TextY+122);
         image(getImage("creatures/Winston"),25,275,100,100);
         image(getImage("cute/Star"),275,275,100,100);
+        
+        TextX = TextX+TextSpeed;
+        
     }
     //current scene 3 is loser screen
     if(currentScene === 3){
         textAlign(CENTER,CENTER);
         background(224, 16, 16);
         drawBitmojiW(75,100,50);
-        drawBitmojiP(315,100,75);
-        rect(90,187,225,75); 
+        drawBitmojiP(320,100,75);
+        rect(TextX+-354,TextY+86,225,75); 
         fill(0, 0, 0);
         textSize(20);
-        text("Sorry! You Lost!\n Better luck next time!",200,223);
+        text("Sorry! You Lost!\n Better luck next time!",TextX+-248,TextY+122);
         image(getImage("creatures/BabyWinston"),25,275,100,100);
         image(getImage("creatures/OhNoes"),275,275,100,100);
+        
+        TextX = TextX+TextSpeed;
+    
     }
 
 };
