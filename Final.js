@@ -1,4 +1,3 @@
-
 var numTries = 0;
 var numMatches = 0;
 var flippedTiles = [];
@@ -10,7 +9,8 @@ var min_l = 2;
 var m = millis();
 var NUM_COLS = 10;
 var NUM_ROWS = 10;
-var checkWin = false;
+var totalGuesses = 51;
+var totalShipsHit = 0;
 var TextX = 100;
 var TextY = 100;
 var TextSpeed = 2;
@@ -324,11 +324,36 @@ var createImages = function(){
 
 };
 createImages();
+//selected.reverse();
+var battleShip2 = {
+    ship1 : selected[0],
+    ship2 : selected[1],
+};
+var battleShip3 = {
+    ship1 : selected[2],
+    ship2 : selected[3],
+    ship3 : selected[4],
+};
+var battleShip4 = {
+    ship1 : selected[5],
+    ship2 : selected[6],
+    ship3 : selected[7],
+    ship4 : selected[8],
+};
+var battleShip5 = {
+    ship1 : selected[9],
+    ship2 : selected[10],
+    ship3 : selected[11],
+    ship4 : selected[12],
+    ship5 : selected[13],
+};
+
 
 /*Change this to set up ships 
 // Now shuffle the elements of that array
 var shuffleArray = function(array) {
     var counter = array.length;
+
     // While there are elements in the array
     while (counter > 0) {
         // Pick a random index
@@ -368,8 +393,12 @@ mouseClicked = function() {
                 flippedTiles.push(tile);
                 if (flippedTiles.length === 1) {
                     numTries++;
-                    if (flippedTiles[0].face === faces[0]) {  //create win and lose condition
-                        println("HIT!");
+                    if (flippedTiles[0].face === faces[0]) {  //create win and lose 
+                        flippedTiles[0].isMatch = true;
+                        flippedTiles.length = 0;
+                        totalShipsHit++;
+                    }
+                    if (flippedTiles[0].face === faces[1]) {  //create win and lose 
                         flippedTiles[0].isMatch = true;
                         flippedTiles.length = 0;
                     }
@@ -403,15 +432,14 @@ draw = function() {
         for (var i = 0; i < tiles.length; i++) {
             tiles[i].draw();
         }
-        
-        if(numTries === 40){
-            currentScene = 3;
-        }
-        
-        if(checkWin === true){
+       
+        if(totalShipsHit === 14){
             currentScene = 2;
         }
     
+        if(numTries === totalGuesses){
+            currentScene = 3;
+        }
     }
     ///end screen here
     //current scene 2 is winner screen
@@ -420,22 +448,22 @@ draw = function() {
         background(23, 242, 8);
         drawBitmojiW(75,100,50);
         drawBitmojiP(315,100,75);
-        rect(TextX+-354,TextY+98,200,45); 
+        rect(TextX-354,TextY+98,200,45);
         fill(0, 0, 0);
         textSize(20);
-        text("Congrats! You Won!",TextX+-255,TextY+122);
+        text("Congrats! You Won!",TextX-255,TextY+122);
         image(getImage("creatures/Winston"),25,275,100,100);
         image(getImage("cute/Star"),275,275,100,100);
         
+        if(TextX === 450){TextSpeed = 0;}
         TextX = TextX+TextSpeed;
-        
     }
     //current scene 3 is loser screen
     if(currentScene === 3){
         textAlign(CENTER,CENTER);
         background(224, 16, 16);
         drawBitmojiW(75,100,50);
-        drawBitmojiP(320,100,75);
+        drawBitmojiP(315,100,75);
         rect(TextX+-354,TextY+86,225,75); 
         fill(0, 0, 0);
         textSize(20);
@@ -443,8 +471,8 @@ draw = function() {
         image(getImage("creatures/BabyWinston"),25,275,100,100);
         image(getImage("creatures/OhNoes"),275,275,100,100);
         
+        if(TextX === 450){TextSpeed = 0;}
         TextX = TextX+TextSpeed;
-    
     }
 
 };
