@@ -9,11 +9,24 @@ var min_l = 2;
 var m = millis();
 var NUM_COLS = 10;
 var NUM_ROWS = 10;
-var totalGuesses = 14;
+var totalGuesses = 40;
 var totalShipsHit = 0;
 var TextX = 100;
 var TextY = 100;
 var TextSpeed = 2;
+var message = "";
+
+/*
+
+Still have to:
+
+create actual ships 
+
+check for ship destroyed
+
+place ships on board randomly
+
+*/
 
 var drawShirt=function(xPosition,yPosition,size){//shirt
     noStroke();
@@ -325,6 +338,7 @@ var createImages = function(){
 };
 createImages();
 //selected.reverse();
+
 var battleShip2 = {
     ship1 : selected[0],
     ship2 : selected[1],
@@ -347,7 +361,6 @@ var battleShip5 = {
     ship4 : selected[12],
     ship5 : selected[13],
 };
-
 
 /*Change this to set up ships 
 // Now shuffle the elements of that array
@@ -395,10 +408,12 @@ mouseClicked = function() {
                     numTries++;
                     if (flippedTiles[0].face === faces[0]) {  //create win and lose 
                         flippedTiles[0].isMatch = true;
+                        message = "HIT!";
                         flippedTiles.length = 0;
                         totalShipsHit++;
                     }
                     if (flippedTiles[0].face === faces[1]) {  //create win and lose 
+                        message = "MISS!";
                         flippedTiles[0].isMatch = true;
                         flippedTiles.length = 0;
                     }
@@ -418,6 +433,9 @@ draw = function() {
         
         fill(0, 0, 0);
         text("Tries: " + numTries,175,20);
+        text(message,10,26);
+        text("Total ships hit: " + totalShipsHit,10,8);
+        
         if (delayStartFC && (frameCount - delayStartFC) > 30) {
             for (var i = 0; i < tiles.length; i++) {
                 var tile = tiles[i];
