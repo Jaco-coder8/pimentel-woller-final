@@ -9,7 +9,7 @@ var min_l = 2;
 var m = millis();
 var NUM_COLS = 10;
 var NUM_ROWS = 10;
-var totalGuesses = 51;
+var totalGuesses = 14;
 var totalShipsHit = 0;
 var TextX = 100;
 var TextY = 100;
@@ -437,7 +437,7 @@ draw = function() {
             currentScene = 2;
         }
     
-        if(numTries === totalGuesses){
+        if(numTries === totalGuesses && totalShipsHit !== 14){
             currentScene = 3;
         }
     }
