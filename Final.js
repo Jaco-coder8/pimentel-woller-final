@@ -9,24 +9,12 @@ var min_l = 2;
 var m = millis();
 var NUM_COLS = 10;
 var NUM_ROWS = 10;
-var totalGuesses = 40;
+var totalGuesses = 51;
 var totalShipsHit = 0;
 var TextX = 100;
 var TextY = 100;
 var TextSpeed = 2;
 var message = "";
-
-/*
-
-Still have to:
-
-create actual ships 
-
-check for ship destroyed
-
-place ships on board randomly
-
-*/
 
 var drawShirt=function(xPosition,yPosition,size){//shirt
     noStroke();
@@ -326,61 +314,224 @@ var faces = [
 
 var selected = [];
 var createImages = function(){
-    var totalSpots = 0;
-    for(var i = 0; i < 14; i++){
-       selected.push(faces[0]);
-       totalSpots++;
+    var randomBoard = round(random(0.5,4.5));   
+    if(randomBoard === 1){
+        for(var i = 0; i < 2; i++){
+          selected.push(faces[0]);
+        }
+        for(var i = 0; i < 27; i++){
+          selected.push(faces[1]);
+        }
+        for(var i = 0; i < 1; i++){
+          selected.push(faces[0]);
+        }
+        for(var i = 0; i < 4; i++){
+          selected.push(faces[1]);
+        }
+        for(var i = 0; i < 1; i++){
+          selected.push(faces[0]);
+        }
+        for(var i = 0; i < 4; i++){
+          selected.push(faces[1]);
+        }
+        for(var i = 0; i < 1; i++){
+          selected.push(faces[0]);
+        }
+        for(var i = 0; i < 4; i++){
+          selected.push(faces[1]);
+        }
+        for(var i = 0; i < 1; i++){
+          selected.push(faces[0]);
+        }
+        for(var i = 0; i < 4; i++){
+          selected.push(faces[1]);
+        }
+        for(var i = 0; i < 1; i++){
+          selected.push(faces[0]);
+        }
+        for(var i = 0; i < 4; i++){
+          selected.push(faces[1]);
+        }
+        for(var i = 0; i < 1; i++){
+          selected.push(faces[0]);
+        }
+        for(var i = 0; i < 4; i++){
+          selected.push(faces[1]);
+        }
+        for(var i = 0; i < 1; i++){
+          selected.push(faces[0]);
+        }
+        for(var i = 0; i < 9; i++){
+          selected.push(faces[1]);
+        }
+        for(var i = 0; i < 1; i++){
+          selected.push(faces[0]);
+        }
+        for(var i = 0; i < 4; i++){
+          selected.push(faces[1]);
+        }
+        for(var i = 0; i < 4; i++){
+          selected.push(faces[0]);
+        }
+        for(var i = 0; i < 22; i++){
+          selected.push(faces[1]);
+        }
     }
-    for(var i = 0; i < ((NUM_COLS * NUM_ROWS)-totalSpots); i++){
-      selected.push(faces[1]);
+    if(randomBoard === 2){
+        for(var i = 0; i < 22; i++){
+          selected.push(faces[1]);
+        }
+        for(var i = 0; i < 1; i++){
+          selected.push(faces[0]);
+        }
+        for(var i = 0; i < 9; i++){
+          selected.push(faces[1]);
+        }
+        for(var i = 0; i < 1; i++){
+          selected.push(faces[0]);
+        }
+        for(var i = 0; i < 12; i++){
+          selected.push(faces[1]);
+        }
+        for(var i = 0; i < 3; i++){
+          selected.push(faces[0]);
+        }
+        for(var i = 0; i < 3; i++){
+          selected.push(faces[1]);
+        }
+        for(var i = 0; i < 1; i++){
+          selected.push(faces[0]);
+        }
+        for(var i = 0; i < 9; i++){
+          selected.push(faces[1]);
+        }
+        for(var i = 0; i < 1; i++){
+          selected.push(faces[0]);
+        }
+        for(var i = 0; i < 2; i++){
+          selected.push(faces[1]);
+        }
+        for(var i = 0; i < 5; i++){
+          selected.push(faces[0]);
+        }
+        for(var i = 0; i < 2; i++){
+          selected.push(faces[1]);
+        }
+        for(var i = 0; i < 1; i++){
+          selected.push(faces[0]);
+        }
+        for(var i = 0; i < 9; i++){
+          selected.push(faces[1]);
+        }
+        for(var i = 0; i < 1; i++){
+          selected.push(faces[0]);
+        }
+        for(var i = 0; i < 18; i++){
+          selected.push(faces[1]);
+        }
     }
-
+    if(randomBoard === 3){
+        for(var i = 0; i < 16; i++){
+          selected.push(faces[1]);
+        }
+        for(var i = 0; i < 3; i++){
+          selected.push(faces[0]);
+        }
+        for(var i = 0; i < 1; i++){
+          selected.push(faces[1]);
+        }
+        for(var i = 0; i < 5; i++){
+          selected.push(faces[0]);
+        }
+        for(var i = 0; i < 20; i++){
+          selected.push(faces[1]);
+        }
+        for(var i = 0; i < 1; i++){
+          selected.push(faces[0]);
+        }
+        for(var i = 0; i < 9; i++){
+          selected.push(faces[1]);
+        }
+        for(var i = 0; i < 1; i++){
+          selected.push(faces[0]);
+        }
+        for(var i = 0; i < 9; i++){
+          selected.push(faces[1]);
+        }
+        for(var i = 0; i < 1; i++){
+          selected.push(faces[0]);
+        }
+        for(var i = 0; i < 2; i++){
+          selected.push(faces[1]);
+        }
+        for(var i = 0; i < 1; i++){
+          selected.push(faces[0]);
+        }
+        for(var i = 0; i < 6; i++){
+          selected.push(faces[1]);
+        }
+        for(var i = 0; i < 1; i++){
+          selected.push(faces[0]);
+        }
+        for(var i = 0; i < 2; i++){
+          selected.push(faces[1]);
+        }
+        for(var i = 0; i < 1; i++){
+          selected.push(faces[0]);
+        }
+        for(var i = 0; i < 21; i++){
+          selected.push(faces[1]);
+        }
+    }
+    if(randomBoard === 4){
+        for(var i = 0; i < 22; i++){
+          selected.push(faces[1]);
+        }
+        for(var i = 0; i < 1; i++){
+          selected.push(faces[0]);
+        }
+        for(var i = 0; i < 2; i++){
+          selected.push(faces[1]);
+        }
+        for(var i = 0; i < 4; i++){
+          selected.push(faces[0]);
+        }
+        for(var i = 0; i < 3; i++){
+          selected.push(faces[1]);
+        }
+        for(var i = 0; i < 1; i++){
+          selected.push(faces[0]);
+        }
+        for(var i = 0; i < 9; i++){
+          selected.push(faces[1]);
+        }
+        for(var i = 0; i < 1; i++){
+          selected.push(faces[0]);
+        }
+        for(var i = 0; i < 8; i++){
+          selected.push(faces[1]);
+        }
+        for(var i = 0; i < 2; i++){
+          selected.push(faces[0]);
+        }
+        for(var i = 0; i < 8; i++){
+          selected.push(faces[1]);
+        }
+        for(var i = 0; i < 2; i++){
+          selected.push(faces[0]);
+        }
+        for(var i = 0; i < 12; i++){
+          selected.push(faces[1]);
+        }
+        for(var i = 0; i < 3; i++){
+          selected.push(faces[0]);
+        }
+        for(var i = 0; i < 22; i++){
+          selected.push(faces[1]);
+        }
+    }
 };
 createImages();
-//selected.reverse();
-
-var battleShip2 = {
-    ship1 : selected[0],
-    ship2 : selected[1],
-};
-var battleShip3 = {
-    ship1 : selected[2],
-    ship2 : selected[3],
-    ship3 : selected[4],
-};
-var battleShip4 = {
-    ship1 : selected[5],
-    ship2 : selected[6],
-    ship3 : selected[7],
-    ship4 : selected[8],
-};
-var battleShip5 = {
-    ship1 : selected[9],
-    ship2 : selected[10],
-    ship3 : selected[11],
-    ship4 : selected[12],
-    ship5 : selected[13],
-};
-
-/*Change this to set up ships 
-// Now shuffle the elements of that array
-var shuffleArray = function(array) {
-    var counter = array.length;
-
-    // While there are elements in the array
-    while (counter > 0) {
-        // Pick a random index
-        var ind = Math.floor(Math.random() * counter);
-        // Decrease counter by 1
-        counter--;
-        // And swap the last element with it
-        var temp = array[counter];
-        array[counter] = array[ind];
-        array[ind] = temp;
-    }
-};
-shuffleArray(selected);
-*/
 
 // Create the tiles
 var tiles = [];
@@ -427,7 +578,7 @@ mouseClicked = function() {
 
 draw = function() {
     if(currentScene === 0){splash();}
-    
+   
     if(currentScene === 1){
         background(255, 255, 255);
         
