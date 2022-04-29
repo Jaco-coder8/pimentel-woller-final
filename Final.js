@@ -1,5 +1,9 @@
+//variable used to track the tries executed by the user
 var numTries = 0;
+
+//keeps track of the matches 
 var numMatches = 0;
+//Introduces an empty array so the tiles in the face 
 var flippedTiles = [];
 var delayStartFC = null;
 var currentScene = 0;  // used in draw function to determine what to show on screen
@@ -227,6 +231,8 @@ var drawBitmojiP = function(BitmojiX,BitmojiY,BitmojiHeight)   {
     
 };
 
+
+//The Kahn Button class
 var Button = function(config) {  //button constructor function
     this.x = config.x || 0;
     this.y = config.y || 0;
@@ -279,7 +285,7 @@ var splash = function( ){    //starting screen with a button that takes you to t
     
 };
 
-//Borrowed from Khan Academy
+//Borrowed from Khan Academy (Tile class)
 var Tile = function(x, y, face) {
     this.x = x;
     this.y = y;
@@ -311,6 +317,9 @@ var faces = [
     getImage("space/rocketship"),
     getImage("creatures/OhNoes")
 ];
+
+//Selected variable stores the ships that are shuffled
+//Computer chooses 1 of 4 random layouts of the ships and places them onto the tiles.
 
 var selected = [];
 var createImages = function(){
@@ -533,7 +542,7 @@ var createImages = function(){
 };
 createImages();
 
-// Create the tiles
+// Tiles are created 
 var tiles = [];
 for (var i = 0; i < NUM_COLS; i++) {
     for (var j = 0; j < NUM_ROWS; j++) {
@@ -548,6 +557,8 @@ for (var i = 0; i < NUM_COLS; i++) {
 mouseClicked = function() {
     if(currentScene === 0){startButton.handleMouseClick();}
     
+    //Scene 1 stores the behaviors of the computer opponent
+    //Conditions check for ships that are scattered on the tiles in scene 1
     if(currentScene === 1){
     for (var i = 0; i < tiles.length; i++) {
         var tile = tiles[i];
@@ -577,6 +588,8 @@ mouseClicked = function() {
     }};
 
 draw = function() {
+    
+    //If conditions determine the layout of each scene.
     if(currentScene === 0){splash();}
    
     if(currentScene === 1){
@@ -645,3 +658,4 @@ draw = function() {
     }
 
 };
+
